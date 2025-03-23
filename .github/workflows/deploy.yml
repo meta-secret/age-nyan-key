@@ -15,17 +15,17 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: Install and Build 🔧
+      - name: Build wasm  🔧
         run: |
           # Install Rust and wasm-pack
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
           
           # Build the wasm module
           wasm-pack build --target web
-          
-          # Install npm dependencies and build web
-          cd web
-          npm clean 
+
+      - name: Build js
+        working-directory: web
+        run: |
           npm install
           npm run build
 
