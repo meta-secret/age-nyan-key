@@ -11,8 +11,9 @@ categories = ["cryptography", "command-line-utilities"]
 [dependencies]
 age = { version = "0.11.1", features = ["curve25519-dalek", "armor"] }
 anyhow = "1.0.97"
-tracing = "0.1.41"
 clap = { version = "4.5.5", features = ["derive"] }
+wasm-bindgen = "0.2.89"
+console_error_panic_hook = "0.1.7"
 
 [[bin]]
 name = "nice-key-gen"
@@ -21,3 +22,8 @@ path = "src/main.rs"
 [lib]
 name = "nice_key_gen"
 path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+lto = true
+opt-level = 3
