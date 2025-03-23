@@ -1,0 +1,23 @@
+[package]
+name = "nice-key-gen"
+version = "0.1.0"
+edition = "2021"
+description = "Generate nice-looking age secret keys"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+keywords = ["age", "encryption", "keys", "cryptography"]
+categories = ["cryptography", "command-line-utilities"]
+
+[dependencies]
+age = { version = "0.11.1", features = ["curve25519-dalek", "armor"] }
+anyhow = "1.0.97"
+tracing = "0.1.41"
+clap = { version = "4.5.5", features = ["derive"] }
+
+[[bin]]
+name = "nice-key-gen"
+path = "src/main.rs"
+
+[lib]
+name = "nice_key_gen"
+path = "src/lib.rs"
