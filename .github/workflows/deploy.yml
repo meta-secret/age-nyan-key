@@ -25,7 +25,8 @@ jobs:
           
           # Install npm dependencies and build web
           cd web
-          npm ci
+          npm clean 
+          npm install
           npm run build
 
       - name: Deploy 🚀
