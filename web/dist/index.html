@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Nyan Key Generator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize@2.0.0/modern-normalize.min.css">
+  <script type="module" crossorigin src="/assets/index-Cmbthxvz.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-jdfmyTXQ.css">
+</head>
+<body>
+  <main>
+    <h1>Age Nyan Key Generator</h1>
+    <p class="description">
+      Generate age encryption keys with pretty patterns.
+      The tool searches for keys where the characters after "AGE-SECRET-KEY-1"
+      start with consecutive repeating characters.
+    </p>
+    
+    <div id="loading-status" class="loading-status">
+      Loading WASM module...
+    </div>
+    
+    <div class="controls">
+      <label>
+        Consecutive repeating characters:
+        <input id="count-input" type="number" value="3" min="1" max="10">
+      </label>
+      
+      <button id="generate-button" disabled>
+        Generate Nice Key
+      </button>
+    </div>
+    
+    <div id="error-message" class="error-message"></div>
+    
+    <div id="key-display" class="key-display">
+      <h2>Generated Key:</h2>
+      <div>
+        <h3>Secret Key:</h3>
+        <pre id="secret-key"></pre>
+        <h3>Public Key:</h3>
+        <pre id="public-key"></pre>
+        <h3>Pattern Character:</h3>
+        <pre id="pattern-char"></pre>
+        <h3>Repeating Pattern:</h3>
+        <pre id="repeating-pattern"></pre>
+      </div>
+    </div>
+  </main>
+  
+</body>
+</html> 
