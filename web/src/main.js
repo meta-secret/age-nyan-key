@@ -3,15 +3,69 @@ import * as wasm from 'nice-key-gen';
 // Initialize WASM module
 async function init() {
   try {
+    // Try standard initialization first
     await wasm.default();
     console.log('WASM initialized successfully');
     document.getElementById('loading-status').textContent = 'WASM module loaded successfully';
     document.getElementById('generate-button').disabled = false;
   } catch (error) {
     console.error('WASM initialization error:', error);
-    document.getElementById('loading-status').textContent = 'Failed to load WASM module';
-    document.getElementById('error-message').textContent = `Error: ${error.message}`;
-    document.getElementById('error-message').style.display = 'block';
+    
+    // Simpler fallback: Try direct fetch with correct MIME type
+    try {
+      document.getElementById('loading-status').textContent = 'Trying fallback WASM loading...';
+      
+      // Find the correct WASM file name by looking for script tags that reference it
+      const scripts = document.querySelectorAll('script');
+      let wasmPath = '';
+      
+      for (const script of scripts) {
+        const src = script.getAttribute('src') || '';
+        if (src.includes('index-') && src.endsWith('.js')) {
+          // Found the main JS file, now load it to find WASM references
+          const response = await fetch(src);
+          const text = await response.text();
+          
+          // Look for WASM file pattern in the JS
+          const match = text.match(/nice_key_gen_bg-[A-Za-z0-9]+\.wasm/);
+          if (match) {
+            wasmPath = `./assets/${match[0]}`;
+            console.log('Found WASM path:', wasmPath);
+            break;
+          }
+        }
+      }
+      
+      if (!wasmPath) {
+        // Fallback to a guess if we couldn't find it
+        wasmPath = './assets/nice_key_gen_bg-HGZLgYOu.wasm';
+      }
+      
+      const response = await fetch(wasmPath, {
+        headers: {
+          'Content-Type': 'application/wasm'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch WASM file: ${response.status} ${response.statusText}`);
+      }
+      
+      // We don't actually need to instantiate it here, we just want to check if we can access it
+      await response.arrayBuffer();
+      
+      // Try standard initialization again after verifying the file is accessible
+      await wasm.default();
+      
+      console.log('WASM loaded via fallback method');
+      document.getElementById('loading-status').textContent = 'WASM module loaded via fallback';
+      document.getElementById('generate-button').disabled = false;
+    } catch (fallbackError) {
+      console.error('Fallback WASM initialization failed:', fallbackError);
+      document.getElementById('loading-status').textContent = 'Failed to load WASM module';
+      document.getElementById('error-message').textContent = `Error: ${error.message}. Fallback error: ${fallbackError.message}`;
+      document.getElementById('error-message').style.display = 'block';
+    }
   }
 }
 
